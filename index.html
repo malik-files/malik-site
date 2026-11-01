@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>About</title>
+
+  <!-- FONT TIP: to use a Google Font, paste its <link> tag here, then set
+       --about-font in static/css/style.css (top of the file). -->
+
+  <link rel="stylesheet" href="static/css/style.css">
+</head>
+<body class="page-about">
+
+  <!-- Side tab to the Projects page -->
+  <a class="side-tab" href="projects.html">Projects</a>
+
+  <!-- Animated sea: waves are drawn on the canvas, pictures sail on top -->
+  <canvas id="sea-canvas"></canvas>
+  <div id="sea-pictures" aria-hidden="true"></div>
+
+  <!-- The blurb. Edit the text freely. -->
+  <main class="about-card">
+    <h1>Your Name</h1>
+    <p>
+      This is placeholder text. Replace it with a short introduction: who you are,
+      what you study or build, and what you want people to know about you.
+      Keep it to a few sentences so the pictures can drift around it.
+    </p>
+  </main>
+
+  <script src="static/js/sea.js"></script>
+</body>
+</html>
