@@ -9,14 +9,15 @@
        --about-font in static/css/style.css (top of the file). -->
 
   <link rel="stylesheet" href="static/css/style.css">
+  <script src="static/js/page-transition.js"></script>
 </head>
 <body class="page-about">
 
   <!-- Side tab to the Projects page -->
   <a class="side-tab" href="projects.html">Projects</a>
 
-  <!-- Animated sea: waves are drawn on the canvas, pictures sail on top -->
-  <canvas id="sea-canvas"></canvas>
+  <!-- Wind trails and floating photos respond to a gentle breeze -->
+  <div id="wind-lines" aria-hidden="true"></div>
   <div id="sea-pictures" aria-hidden="true"></div>
 
   <!-- The blurb. Edit the text freely. -->

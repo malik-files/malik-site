@@ -11,7 +11,46 @@
 
 * { box-sizing: border-box; }
 html, body { margin: 0; height: 100%; }
-body { font-family: var(--ui-font); color: var(--ink); }
+body {
+  font-family: var(--ui-font);
+  color: var(--ink);
+  text-shadow: 0.25px 0 rgba(0, 30, 255, 0.18), -0.25px 0 rgba(255, 0, 80, 0.12);
+}
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  pointer-events: none;
+  opacity: 0.5;
+  background-image:
+    linear-gradient(to bottom, transparent 50%, rgba(10, 18, 20, 0.13) 50%),
+    linear-gradient(90deg, rgba(255, 0, 0, 0.07), rgba(0, 255, 0, 0.025), rgba(0, 0, 255, 0.07));
+  background-size: 100% 3px, 3px 100%;
+  mix-blend-mode: multiply;
+}
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 201;
+  pointer-events: none;
+  opacity: 0.1;
+  background-color: rgba(18, 16, 16, 0.08);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 160 160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.82' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.55'/%3E%3C/svg%3E");
+  background-size: 160px 160px;
+  mix-blend-mode: multiply;
+  animation: crt-flicker 0.18s steps(2, end) infinite;
+}
+
+@keyframes crt-flicker {
+  0%, 100% { opacity: 0.08; }
+  50% { opacity: 0.14; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body::after { animation: none; opacity: 0.1; }
+}
 
 /* ---------- Side tab (shared by both pages) ---------- */
 .side-tab {
@@ -33,11 +72,62 @@ body { font-family: var(--ui-font); color: var(--ink); }
 .side-tab:hover, .side-tab:focus-visible { padding-left: 1.2rem; padding-right: 1.2rem; outline: none; }
 .side-tab:focus-visible { box-shadow: 0 0 0 3px #fff, 0 0 0 5px var(--navy); }
 
-/* ---------- About page ---------- */
-.page-about { overflow: hidden; background: #1f6f9a; }
+.page-pull {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  background: var(--navy);
+  pointer-events: none;
+  will-change: clip-path;
+}
+.page-pull-handle {
+  z-index: 1001;
+  pointer-events: none;
+  transition: none;
+  will-change: transform, opacity;
+}
+html.page-pull-enter::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  background: var(--navy);
+  pointer-events: none;
+  animation: page-pull-arrive 540ms ease-out forwards;
+}
+@keyframes page-pull-arrive {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
 
-#sea-canvas { position: fixed; inset: 0; width: 100%; height: 100%; }
-#sea-pictures { position: fixed; inset: 0; overflow: hidden; pointer-events: none; }
+/* ---------- About page ---------- */
+.page-about { overflow: hidden; background: #fff; }
+
+#wind-lines, #sea-pictures { position: fixed; inset: 0; overflow: hidden; pointer-events: none; }
+#wind-lines { z-index: 1; }
+#sea-pictures { z-index: 2; }
+
+.wind-streak {
+  position: absolute;
+  left: 0;
+  width: clamp(220px, 32vw, 360px);
+  height: auto;
+  overflow: visible;
+  opacity: 0;
+  animation: wind-sweep 8s ease-in-out infinite;
+}
+.wind-streak path {
+  fill: none;
+  stroke: rgba(36, 82, 105, 0.58);
+  stroke-width: 2.2;
+  stroke-linecap: round;
+}
+@keyframes wind-sweep {
+  0% { opacity: 0; transform: translate3d(-10vw, 0, 0) rotate(-5deg) scale(0.82); }
+  18% { opacity: 0.8; }
+  78% { opacity: 0.55; }
+  100% { opacity: 0; transform: translate3d(110vw, -2vh, 0) rotate(5deg) scale(1.08); }
+}
 
 .sea-pic {
   position: absolute;
@@ -91,4 +181,8 @@ body { font-family: var(--ui-font); color: var(--ink); }
 @media (max-width: 600px) {
   .projects-wrap { padding: 2rem 1rem 3rem 3.2rem; }
   .about-card { padding: 1.4rem; width: calc(100vw - 4.5rem); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wind-streak { display: none; }
 }
